@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-7w5si-zb@u$(md)$xgl41!n6**^78jf^#2vrb(k8%5ziex#pr#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-import os
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
+
+ALLOWED_HOSTS = ['render.com', 'birthday-surprise-pradeep-to-anjali.onrender.com']
 
 
 
