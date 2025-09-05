@@ -24,8 +24,16 @@ SECRET_KEY = 'django-insecure-7w5si-zb@u$(md)$xgl41!n6**^78jf^#2vrb(k8%5ziex#pr#
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
+import os
 
-ALLOWED_HOSTS = ['render.com', 'birthday-surprise-pradeep-to-anjali.onrender.com']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'render.com',
+    'birthday-surprise-pradeep-to-anjali.onrender.com',
+    os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+]
+
 
 
 
