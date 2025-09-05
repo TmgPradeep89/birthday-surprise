@@ -31,9 +31,9 @@ ALLOWED_HOSTS = ['render.com', 'birthday-surprise-pradeep-to-anjali.onrender.com
 
 DEBUG = True
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'birthday_site/static'),]
 
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
