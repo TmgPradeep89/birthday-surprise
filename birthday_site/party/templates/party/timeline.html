@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timeline of Us 🌠</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #7b1096 100%);
+      overflow-x: hidden;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-top: 30px;
+      text-shadow: 2px 2px 5px #000;
+      z-index: 1;
+    }
+
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0; left: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      animation: floatUp 10s linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-100vh); opacity: 0; }
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 20px;
+      padding: 40px;
+      max-width: 1000px;
+      margin-top: 40px;
+      z-index: 1;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid #fff;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.2rem;
+      opacity: 0;
+      animation: fadeSlide 3s forwards;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #fff;
+    }
+
+    .card:nth-child(1) { animation-delay: 1s; }
+    .card:nth-child(2) { animation-delay: 4s; }
+    .card:nth-child(3) { animation-delay: 7s; }
+    .card:nth-child(4) { animation-delay: 10s; grid-column: 1 / span 2; }
+    .card:nth-child(5) { animation-delay: 13s; grid-column: 3; }
+
+    @keyframes fadeSlide {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    #nextBtn {
+      margin-top: 30px;
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      background: #830ab3;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff66cc;
+      transition: all 0.3s;
+      opacity: 0;
+      animation: fadeInNext 2s ease forwards;
+      animation-delay: 16s;
+      z-index: 1;
+    }
+
+    #nextBtn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px #ff99dd;
+    }
+
+    @keyframes fadeInNext {
+      from { opacity: 0; transform: scale(0.8); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    audio {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .card-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .card:nth-child(4), .card:nth-child(5) {
+        grid-column: auto;
+      }
+      h1 { font-size: 2rem; }
+      .card { font-size: 1rem; padding: 15px; }
+      #nextBtn { font-size: 1.2rem; padding: 12px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<h1>🌠 Our Friendship Journey</h1>
+
+<div class="stars"></div>
+
+<div class="card-container">
+  <div class="card">We met in Mobile Legends — just two players in a random match. But that game sparked something more than victory... it sparked a friendship.</div>
+  <div class="card">From teammates to friends, we played, laughed, and supported each other. Every match was more fun because you were there.</div>
+  <div class="card">We shared reels, memes, and little pieces of our day. It wasn’t just about gaming anymore — it was about being part of each other's world.</div>
+  <div class="card">You listened when I needed to vent. You celebrated my wins and cheered me up when I was down. That’s what made this friendship real.</div>
+  <div class="card">You’re not just a friend — you’re a highlight in my story. And today, I just want to say... thank you for being you.</div>
+</div>
+
+<button id="nextBtn" onclick="window.location.href='{% url 'wish' %}'">👉 Next: Make a Wish ✨</button>
+
+<audio id="timelineSong" autoplay loop>
+  <source src="{% static 'timeline_song.mp3' %}" type="audio/mpeg">
+</audio>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  // Floating stars
+  const starsContainer = document.querySelector('.stars');
+  for (let i = 0; i < 100; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = Math.random() * 100 + 'vw';
+    star.style.top = Math.random() * 100 + 'vh';
+    star.style.animationDuration = (Math.random() * 5 + 5) + 's';
+    starsContainer.appendChild(star);
+  }
+});
+</script>
+
+</body>
+</html>

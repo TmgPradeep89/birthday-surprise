@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Welcome 🌅</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: linear-gradient(to top, #970fa3, #d269dc);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      animation: fadeInBg 3s ease forwards;
+      overflow: hidden;
+      position: relative;
+    }
+
+    @keyframes fadeInBg {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      animation: fadeInTitle 2s ease forwards;
+      z-index: 1;
+    }
+
+    @keyframes fadeInTitle {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .typing {
+      font-size: 1.4rem;
+      max-width: 600px;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid white;
+      animation: typing 4s steps(60, end), blink 0.75s step-end infinite;
+      z-index: 1;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to   { width: 100% }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent }
+    }
+
+    #startBtn {
+      margin-top: 40px;
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      background: #a532b5;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff66cc;
+      animation: pulse 2s infinite;
+      z-index: 1;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 10px #ff66cc; }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px #ff99dd; }
+      100% { transform: scale(1); box-shadow: 0 0 10px #ff66cc; }
+    }
+
+    #quote {
+      position: absolute;
+      bottom: 60px;
+      font-size: 1.2rem;
+      opacity: 0;
+      animation: fadeInQuote 3s ease forwards;
+      animation-delay: 5s;
+      z-index: 1;
+    }
+
+    #blessing {
+      position: absolute;
+      bottom: 20px;
+      font-size: 1.1rem;
+      opacity: 0;
+      animation: fadeInQuote 3s ease forwards;
+      animation-delay: 7s;
+      z-index: 1;
+    }
+
+    @keyframes fadeInQuote {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    #secretStar {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle, #fff 40%, #ff66cc 80%);
+      border-radius: 50%;
+      box-shadow: 0 0 10px #fff;
+      cursor: pointer;
+      animation: twinkle 2s infinite;
+      z-index: 2;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.2); }
+    }
+
+    #secretMsg {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: rgba(255,255,255,0.1);
+      padding: 10px 15px;
+      border-radius: 10px;
+      font-size: 1rem;
+      display: none;
+      z-index: 2;
+    }
+
+    audio {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .typing { font-size: 1.2rem; padding: 0 20px; }
+      #startBtn { font-size: 1.2rem; padding: 12px 24px; }
+      #quote, #blessing { font-size: 1rem; padding: 0 10px; }
+      #secretMsg { font-size: 0.9rem; width: 180px; }
+    }
+  </style>
+</head>
+<body>
+
+<h1> 💖 Welcome to Something Special</h1>
+<p class="typing">A little surprise awaits... Ready to celebrate?</p>
+
+<button id="startBtn" onclick="window.location.href='{% url 'cake' %}'">🎂 Start the Celebration</button>
+
+<div id="quote">
+  “Some moments are meant to be remembered. This is one of them.”<br>
+  <em>From Pradeep </em>
+</div>
+
+<div id="blessing">
+  “May this year and the new year 2026 bring you peace, laughter, and everything you’ve been hoping for.”
+</div>
+
+<div id="secretStar" title="Click me ✨"></div>
+<div id="secretMsg">You found the hidden star. Just like you, it shines quietly but beautifully.</div>
+
+<audio id="homeSong" loop>
+  <source src="{% static 'home_song.mp3' %}" type="audio/mpeg">
+</audio>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const audio = document.getElementById("homeSong");
+  
+  document.body.addEventListener("click", () => {
+    audio.play().then(() => {
+      console.log("Background music playing!");
+    }).catch(err => {
+      console.warn("Playback blocked:", err);
+    });
+  }, { once: true });
+
+  const star = document.getElementById("secretStar");
+  const msg = document.getElementById("secretMsg");
+  star.addEventListener("click", () => {
+    msg.style.display = "block";
+  });
+});
+</script>
+
+</body>
+</html>

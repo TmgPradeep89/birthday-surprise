@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Cake 🎂</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: linear-gradient(-45deg, #7b2ff7, #f107a3, #ff66ff, #cc66ff);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      overflow: hidden;
+      color: white;
+      text-align: center;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      font-size: 2.5rem;
+      text-shadow: 2px 2px 5px #000;
+    }
+
+    .cake-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .cake-img {
+      width: 320px;
+      border-radius: 15px;
+    }
+
+    .flame {
+      position: absolute;
+      width: 15px;
+      height: 25px;
+      background: radial-gradient(circle, yellow 40%, orange 70%, transparent 100%);
+      border-radius: 50%;
+      animation: flicker 0.2s infinite alternate;
+      cursor: pointer;
+    }
+
+    @keyframes flicker {
+      from { transform: scale(1); opacity: 1; }
+      to   { transform: scale(1.2); opacity: 0.8; }
+    }
+
+    #finalMsg {
+      margin-top: 30px;
+      font-size: 1.8rem;
+      display: none;
+      animation: fadein 2s forwards;
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: scale(0.5); }
+      to   { opacity: 1; transform: scale(1.2); }
+    }
+
+    #journeyBtn {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 1.3rem;
+      background: #8f11c6;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff66cc;
+      transition: all 0.3s;
+      display: none;
+      animation: fadeinBtn 2s forwards;
+    }
+
+    #journeyBtn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #ff99dd;
+    }
+
+    @keyframes fadeinBtn {
+      from { opacity: 0; transform: scale(0.8); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    canvas.confetti {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .cake-img { width: 240px; }
+      .flame { width: 12px; height: 20px; }
+      #finalMsg { font-size: 1.5rem; }
+      #journeyBtn { font-size: 1.1rem; padding: 10px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<h1>🎂 Blow Out the Candles! 🎉</h1>
+
+<div class="cake-container">
+  <img src="{% static 'cake_image1.png' %}" class="cake-img" alt="Birthday Cake">
+
+  <!-- Position flames directly above candle tips -->
+  <div class="flame" style="top: 20px; left: 130px;"></div>
+  <div class="flame" style="top: 15px; left: 155px;"></div>
+  <div class="flame" style="top: 20px; left: 180px;"></div>
+  <div class="flame" style="top: 30px; left: 195px;"></div>
+</div>
+
+<div id="finalMsg">✨Happy Birthday, Anjali! I hope all your wishes come true! ✨</div>
+<button id="journeyBtn" onclick="window.location.href='{% url 'timeline' %}'">💖 Our Friendship Journey</button>
+<canvas class="confetti"></canvas>
+
+<audio id="bdaySong" loop>
+  <source src="{% static 'happy_birthday.mp3' %}" type="audio/mpeg">
+</audio>
+
+<script>
+// Music
+const audio = document.getElementById("bdaySong");
+audio.muted = false;
+
+// Trigger music on first flame click
+let musicStarted = false;
+
+// Flames
+const flames = document.querySelectorAll(".flame");
+const finalMsg = document.getElementById("finalMsg");
+const journeyBtn = document.getElementById("journeyBtn");
+
+flames.forEach(flame => {
+  flame.addEventListener("click", () => {
+    flame.remove();
+
+    if (!musicStarted) {
+      audio.play().catch(() => {});
+      musicStarted = true;
+    }
+
+    if (document.querySelectorAll(".flame").length === 0) {
+      finalMsg.style.display = "block";
+      journeyBtn.style.display = "inline-block";
+      journeyBtn.style.animation = "fadeinBtn 2s forwards";
+      triggerConfetti();
+    }
+  });
+});
+
+// Confetti
+const canvas = document.querySelector('.confetti');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+const confettiPieces = [];
+for (let i = 0; i < 100; i++) {
+  confettiPieces.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 8 + 4,
+    color: `hsl(${Math.random() * 360}, 80%, 60%)`,
+    speed: Math.random() * 3 + 2
+  });
+}
+
+function drawConfetti() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  confettiPieces.forEach(c => {
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+    ctx.fillStyle = c.color;
+    ctx.fill();
+  });
+}
+
+function updateConfetti() {
+  confettiPieces.forEach(c => {
+    c.y += c.speed;
+    if (c.y > canvas.height) {
+      c.y = -10;
+      c.x = Math.random() * canvas.width;
+    }
+  });
+}
+
+function animateConfetti() {
+  drawConfetti();
+  updateConfetti();
+  requestAnimationFrame(animateConfetti);
+}
+
+function triggerConfetti() {
+  animateConfetti();
+}
+</script>
+</body>
+</html>
